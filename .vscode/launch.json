@@ -1,0 +1,33 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "adminapp",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "adminapp (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "adminapp (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "Flutter",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "deviceId": "tablet",
+            "cwd": "${workspaceFolder}",
+            "flutterRunAdditionalArgs": [
+                "--tablet"
+            ]
+        }
+    ]
+}

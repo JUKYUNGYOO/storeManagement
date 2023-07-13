@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:adminapp/NextPage.dart';
+import 'NavigationRailPage.dart';
 
 class SignInPage2 extends StatelessWidget {
   const SignInPage2({Key? key}) : super(key: key);
@@ -7,6 +7,8 @@ class SignInPage2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isSmallScreen = MediaQuery.of(context).size.width < 600;
+    final bool isTablet = MediaQuery.of(context).size.width >= 600 &&
+        MediaQuery.of(context).size.width < 960;
 
     return Scaffold(
       body: Center(
@@ -14,22 +16,32 @@ class SignInPage2 extends StatelessWidget {
             ? Column(
                 mainAxisSize: MainAxisSize.min,
                 children: const [
-                  _Logo(), //로고 위젯
-                  _FormContent(), //폼 컨텐츠 위젯
+                  _Logo(),
+                  _FormContent(),
                 ],
               )
-            : Container(
-                padding: const EdgeInsets.all(32.0),
-                constraints: const BoxConstraints(maxWidth: 800),
-                child: Row(
-                  children: const [
-                    Expanded(child: _Logo()), //로고 위젯
-                    Expanded(
-                      child: Center(child: _FormContent()), //폼 컨텐츠 위젯
+            : isTablet
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Expanded(child: _Logo()),
+                      Expanded(
+                        child: _FormContent(),
+                      ),
+                    ],
+                  )
+                : Container(
+                    padding: const EdgeInsets.all(32.0),
+                    constraints: const BoxConstraints(maxWidth: 800),
+                    child: Row(
+                      children: const [
+                        Expanded(child: _Logo()),
+                        Expanded(
+                          child: Center(child: _FormContent()),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
+                  ),
       ),
     );
   }
@@ -49,16 +61,14 @@ class _Logo extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            "Welcome to \nInterMinds Admin App!", //환영 메시지
+            "Welcome to \nInterMinds Admin App!",
             textAlign: TextAlign.center,
             style: isSmallScreen
-                ? Theme.of(context)
-                    .textTheme
-                    .headline5 //작은 화면에서는 headline5 스타일 사용
+                ? Theme.of(context).textTheme.headline5
                 : Theme.of(context)
                     .textTheme
                     .headline4
-                    ?.copyWith(color: Colors.black), // 큰 화면에서는 headline4스타일 사용
+                    ?.copyWith(color: Colors.black),
           ),
         ),
       ],
@@ -78,7 +88,7 @@ class __FormContentState extends State<_FormContent> {
   bool _rememberMe = false;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final Map<String, dynamic> _formValues = {}; //폼 필드 값 저장을 위한 맵
+  final Map<String, dynamic> _formValues = {};
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +102,6 @@ class __FormContentState extends State<_FormContent> {
           children: [
             TextFormField(
               validator: (value) {
-                // 이메일 유효성 검사
                 if (value == null || value.isEmpty) {
                   return 'Please enter some text';
                 }
@@ -174,13 +183,6 @@ class __FormContentState extends State<_FormContent> {
                     borderRadius: BorderRadius.circular(4),
                   ),
                 ),
-                child: const Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Text(
-                    'Sign in',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                ),
                 onPressed: () {
                   if (_formKey.currentState?.validate() ?? false) {
                     final String enteredEmail =
@@ -190,10 +192,11 @@ class __FormContentState extends State<_FormContent> {
 
                     if (enteredEmail == 'test@interminds.ai' &&
                         enteredPassword == 'testtest') {
-                      // Navigator.pushNamed(context, '/next');
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => NextPage()),
+                        MaterialPageRoute(
+                          builder: (context) => NavigationRailPage(),
+                        ),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -204,6 +207,39 @@ class __FormContentState extends State<_FormContent> {
                     }
                   }
                 },
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    'Sign In',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            InkWell(
+              onTap: () {
+                // Sign up 버튼 클릭 시 동작
+                // 여기에 Sign up 화면으로 이동하는 코드를 추가
+              },
+              child: Text.rich(
+                TextSpan(
+                  text: "Don't have an account? ",
+                  style: TextStyle(fontSize: 14),
+                  children: [
+                    TextSpan(
+                      text: "Sign Up",
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.blue, // 하늘색
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
